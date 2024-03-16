@@ -8,7 +8,9 @@ export default function Home() {
       <Navbar />
       <div className="text-[#00856F] mx-10 flex gap-6 relative top-32 left-[75%] font-semibold">
         <span className="hover:text-[#559c90]">Consult a doctor</span>
+        <Link to="/lab">
         <span className="hover:text-[#559c90]">Get Medical Tests</span>
+        </Link>
       </div>
       <div className="w-[40%] text-3xl lg:text-4xl text-[#00856F] relative top-[27%] left-[15%] font-semibold">
         <span>
@@ -32,9 +34,11 @@ export default function Home() {
             Scan Report
           </button>
         </Link>
+        <Link to="/lab" >
         <button className="w-[10%] absolute bottom-14 left-[30%] p-3 text-[#00856F] font-semibold bg-[#B1D7D0] hover:bg-[#99d7cb] rounded-[10px]">
           Lab Test
         </button>
+        </Link>
       </div>
     </div>
   );

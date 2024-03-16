@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Upload from "../components/Upload";
 import { MdArrowBack } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
 import { MdOutlineUploadFile } from "react-icons/md";
