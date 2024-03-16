@@ -7,5 +7,10 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
+
+input[type='range'] {
+    background-color: #E1F9F5; /* Change to your desired color */
+  }
+  
