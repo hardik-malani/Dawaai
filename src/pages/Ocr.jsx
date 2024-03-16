@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import Upload from "../components/Upload";
 import { MdArrowBack } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
 import { MdOutlineUploadFile } from "react-icons/md";
 import { CiMicrophoneOn } from "react-icons/ci";
 import { GiSpeaker } from "react-icons/gi";
-
-
 
 export default function Ocr() {
   const [showFamilyPhoto, setShowFamilyPhoto] = useState(true);
@@ -109,7 +106,8 @@ export default function Ocr() {
             <div className="bg-white chat mr-10 w-[30rem] mx-auto h-[400px] p-3 break-words">
               <div className="chat chat-start">
                 <div className="chat-bubble">
-                  It's over Anakin, <br />I have the high ground. <GiSpeaker size={30}/>
+                  It's over Anakin, <br />I have the high ground.{" "}
+                  <GiSpeaker size={30} />
                 </div>
               </div>
               <div className="chat chat-end">
@@ -132,7 +130,7 @@ export default function Ocr() {
                 className="w-[100%] focus:outline-none"
               />
               <img src="/scan/search.svg" alt="" className="w-7" />
-              <CiMicrophoneOn size={40} color="green"/>
+              <CiMicrophoneOn size={40} color="green" />
             </div>
           </>
         )}
