@@ -14,6 +14,12 @@ export default function Therapist() {
   const [cameraImage, setCameraImage] = useState(null); // State to store camera image
   const [videoFile, setVideoFile] = useState(null); // State to store uploaded video file
   const [isVideoUploaded, setIsVideoUploaded] = useState(false); // State to track whether video is uploaded
+  const [timerVisible, setTimerVisible] = useState(false); // State to track the visibility of the timer
+  const [time, setTime] = useState(0); // State to track time for the timer
+  const [generateReportVisible, setGenerateReportVisible] = useState(false); // State to track the visibility of the generate report button
+  const [downloadButtonVisible, setDownloadButtonVisible] = useState(false); // State to track the visibility of the download button
+
+  let timerInterval;
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -40,6 +46,17 @@ export default function Therapist() {
   };
 
   const handleCameraOn = () => {
+    // Toggle visibility of timer and download button
+    setTimerVisible(!timerVisible);
+    setDownloadButtonVisible(false);
+    setGenerateReportVisible(timerVisible); // Show generate report button when timer starts
+
+    // Reset timer
+    setTime(0);
+
+    // Stop the timer if already running
+    clearInterval(timerInterval);
+
     // Increase progress by another 50 when switch camera button is clicked
     setProgress((prevProgress) => prevProgress + 50);
     // Implement other camera handling logic here
@@ -72,6 +89,27 @@ export default function Therapist() {
       }
     }, 5000);
   };
+
+  const handleTimerClick = () => {
+    // Nothing here as we don't need a button to start the timer
+  };
+
+  const handleGenerateReportClick = () => {
+    setGenerateReportVisible(false);
+    setDownloadButtonVisible(true);
+  };
+
+  // Update time every second
+  React.useEffect(() => {
+    if (timerVisible) {
+      timerInterval = setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000);
+    } else {
+      clearInterval(timerInterval);
+    }
+    return () => clearInterval(timerInterval);
+  }, [timerVisible]);
 
   return (
     <>
@@ -136,6 +174,36 @@ export default function Therapist() {
           >
             Switch On your Camera
           </button>
+          {timerVisible && (
+            <div className="flex justify-center mt-5">
+              <span className="text-white text-lg font-semibold">
+                {("0" + Math.floor((time % 3600) / 60)).slice(-2)}:
+                {("0" + (time % 60)).slice(-2)}
+              </span>
+            </div>
+          )}
+          {generateReportVisible && (
+            <div className="flex justify-center mt-5">
+              <button
+                className="p-3 bg-[#5BBA9F] w-fit rounded-lg text-white hover:bg-[#4bc9a5]"
+                onClick={handleGenerateReportClick}
+              >
+                Generate Report
+              </button>
+            </div>
+          )}
+          {downloadButtonVisible && (
+            <div className="flex justify-center mt-5">
+              <button
+                className="p-3 bg-[#5BBA9F] w-fit rounded-lg text-white hover:bg-[#4bc9a5]"
+                onClick={() => {
+                  // Implement download report logic here
+                }}
+              >
+                Download Report
+              </button>
+            </div>
+          )}
         </div>
         <div className="flex flex-col px-10">
           <div className="w-[24rem] h-48 bg-[#D9D9D9] rounded-2xl">
