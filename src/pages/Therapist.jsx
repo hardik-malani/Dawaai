@@ -60,6 +60,17 @@ export default function Therapist() {
     const file = event.target.files[0];
     setVideoFile(file);
     setIsVideoUploaded(true);
+
+    setTimeout(() => {
+      const graphDiv = document.getElementById("graph");
+      if (graphDiv) {
+        const img = document.createElement("img");
+        img.src = "/graph.jpg";
+        img.alt = "Graph";
+        img.className = "w-[90%] h-[90%] object-cover m-2";
+        graphDiv.appendChild(img);
+      }
+    }, 5000);
   };
 
   return (
@@ -150,7 +161,7 @@ export default function Therapist() {
           >
             Upload Video
           </button>
-          <div id="graph" className="w-[24rem] h-40 bg-white rounded-2xl"></div>
+          <div id="graph" className="w-[24rem] h-64 bg-white rounded-2xl"></div>
         </div>
       </div>
       <div>
