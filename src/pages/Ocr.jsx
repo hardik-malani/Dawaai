@@ -19,6 +19,7 @@ export default function Ocr() {
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [languages, setLanguages] = useState({});
   const [speechToTextResult, setSpeechToTextResult] = useState(null);
+  const [language, setLanguage] = useState("hindi");
 
   useEffect(() => {
     async function fetchLanguages() {
@@ -215,170 +216,187 @@ export default function Ocr() {
     }
   };
 
+  const toggleLanguage = () => {
+    setLanguage(language === "english" ? "hindi" : "english");
+  };
+
   return (
-    <div className="flex bg-[#E1F9F5] justify-between items-center">
-      <div className="bg-[#00856F] w-[60%] h-fit px-2 py-10">
-        <button
-          onClick={goBack}
-          className="-mt-5 mb-5 text-white hover:text-gray-300"
-        >
-          <MdArrowBack size={40} />
-        </button>
-        <div className="flex gap-6 items-center">
-          <FaPlus className="ml-10 text-white" size={36} />
-          <span className="text-3xl text-white font-semibold">
-            Welcome to Dawaai,
-          </span>
-        </div>
+  <div className="flex bg-[#E1F9F5] justify-between items-center">
+    <div className="bg-[#00856F] w-[60%] h-fit px-2 py-10">
+      <button onClick={goBack} className="-mt-5 mb-5 text-white hover:text-gray-300">
+        <MdArrowBack size={40} />
+      </button>
+      <div className="flex gap-6 items-center">
+        <FaPlus className="ml-10 text-white" size={36} />
+        <span className="text-3xl text-white font-semibold">
+          {language === "english" ? "Welcome to Dawaai," : "डवाई में आपका स्वागत है,"}
+        </span>
+      </div>
+      <div className="flex flex-col">
         <div className="flex flex-col">
-          <div className="flex flex-col">
-            <span className="text-sm m-10 text-white">
-              Step 1 of 2: Upload your document
-            </span>
-            <progress
-              className="progress w-[50%] -mt-5 ml-10 bg-white progress-success"
-              value={progress}
-              max="100"
-            ></progress>
-            <input
-          type="file"
-          id="fileUpload"
-          style={{ display: "none" }}
-          onChange={handleImageUpload}
-        />
-            <button className="my-5 p-3 flex gap-2 items-center ml-8 bg-[#5BBA9F] w-fit rounded-lg text-white hover:bg-[#4bc9a5]"
-             onClick={() => document.getElementById("fileUpload").click()}>
-              <MdOutlineUploadFile /> Upload Document
-            </button>
-            <span className="p-3 flex gap-2 -mt-5 items-center ml-6 text-white">
-              Or drag and drop your file here
-            </span>
-            {!image && (
-          <img
-            src={"/AssetsHome/uploadDoc.svg"}
-            alt="Prescription"
-            className="self-center w-[8rem] md:w-[16rem]"
+          <span className="text-sm m-10 text-white">
+            {language === "english"
+              ? "Step 1 of 2: Upload your document"
+              : "चरण 1 में से 2: अपना दस्तावेज़ अपलोड करें"}
+          </span>
+          <progress
+            className="progress w-[50%] -mt-5 ml-10 bg-white progress-success"
+            value={progress}
+            max="100"
+          ></progress>
+          <input
+            type="file"
+            id="fileUpload"
+            style={{ display: "none" }}
+            onChange={handleImageUpload}
           />
-        )}
-        {image && (
-          <img
-            src={image}
-            alt="uploaded-image"
-            className="self-center w-[8rem] md:w-[4rem]"
-          />
-        )}
-          </div>
-          <div className="flex flex-col mt-5">
-            <span className="text-sm m-10 text-white">
-              Step 2 of 2: Processing your document
-            </span>
-            <progress
-              className="progress w-[50%] -mt-5 ml-10 bg-white progress-success"
-              value={progress}
-              max="100"
-            ></progress>
-            <button className="my-5 p-3 text-xs flex gap-2 items-center ml-8 bg-[#5BBA9F] w-fit rounded-lg text-white hover:bg-[#4bc9a5]">
-              Edit Text
-            </button>
-            <span className="p-3 text-xs flex gap-2 -mt-5 items-center ml-6 text-white">
-              We extracted text from your document. You can edit it below.
-            </span>
-            <div className="flex gap-6">
+          <button className="my-5 p-3 flex gap-2 items-center ml-8 bg-[#5BBA9F] w-fit rounded-lg text-white hover:bg-[#4bc9a5]"
+            onClick={() => document.getElementById("fileUpload").click()}
+          >
+            <MdOutlineUploadFile /> {language === "english" ? "Upload Document" : "दस्तावेज़ अपलोड करें"}
+          </button>
+          <span className="p-3 flex gap-2 -mt-5 items-center ml-6 text-white">
+            {language === "english"
+              ? "Or drag and drop your file here"
+              : "या अपना फ़ाइल यहाँ खींचें और छोड़ें"}
+          </span>
+          {image && ocrResult === "" && (
+ <div className="flex justify-center items-center h-32">
+ <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-16 w-16"></div>
+</div>
+)}
+          {/* {image && (
+            <img
+              src={image}
+              alt="uploaded-image"
+              className="self-center w-[8rem] md:w-[4rem]"
+            />
+          )} */}
+        </div>
+        <div className="flex flex-col mt-5">
+          <span className="text-sm m-10 text-white">
+            {language === "english"
+              ? "Step 2 of 2: Processing your document"
+              : "चरण 2 में से 2: आपका दस्तावेज़ प्रोसेस करना"}
+          </span>
+          <progress
+            className="progress w-[50%] -mt-5 ml-10 bg-white progress-success"
+            value={progress}
+            max="100"
+          ></progress>
+          <button className="my-5 p-3 text-xs flex gap-2 items-center ml-8 bg-[#5BBA9F] w-fit rounded-lg text-white hover:bg-[#4bc9a5]">
+            {language === "english" ? "Edit Text" : "पाठ संपादित करें"}
+          </button>
+          <span className="p-3 text-xs flex gap-2 -mt-5 items-center ml-6 text-white">
+            {language === "english"
+              ? "We extracted text from your document. You can edit it below."
+              : "हमने आपके दस्तावेज़ से पाठ निकाला। आप इसे नीचे संपादित कर सकते हैं।"}
+          </span>
+          <div className="flex gap-6">
             <textarea
               className="border border-black rounded-lg p-3 mb-4 w-full h-32"
-              placeholder="Text will appear here..."
+              placeholder={language === "english" ? "Text will appear here..." : "पाठ यहाँ दिखाई जाएगा..."}
               value={ocrResult}
             ></textarea>
-              <button
-                className="bg-[#5BBA9F] p-3 h-fit rounded-lg self-end hover:bg-[#4bc9a5] text-white"
-                onClick={() => handleSave()}
-              >
-                Save
-              </button>
-            </div>
+            <button
+              className="bg-[#5BBA9F] p-3 h-fit rounded-lg self-end hover:bg-[#4bc9a5] text-white"
+              onClick={() => handleSave()}
+            >
+              {language === "english" ? "Save" : "बचाना"}
+            </button>
           </div>
         </div>
       </div>
-      <div>
-        {showFamilyPhoto && (
-          <>
-            <img
-              src="/scan/family.svg"
-              alt="family"
-              className="w-[40%] mx-auto"
+    </div>
+    <div>
+      {showFamilyPhoto && (
+        <>
+          <img
+            src="/scan/family.svg"
+            alt="family"
+            className="w-[40%] mx-auto"
+          />
+          <p className="w-[40%] mx-auto text-[#00856F] font-semibold text-xl">
+            {language === "english"
+              ? "\"Health is not valued till sickness comes.\" - Thomas Fuller"
+              : "\"स्वास्थ्य की कीमत तब तक महसूस नहीं की जाती है जब बीमारी आती है।\" - थॉमस फुलर"}
+          </p>
+          <div className="flex justify-between bg-white p-2 absolute bottom-10 w-[30%] right-[3%] gap-2">
+            <img src="/scan/sparkle.svg" alt="" />
+            <input
+              type="text"
+              name="textbox"
+              className="w-[100%] focus:outline-none"
             />
-            <p className="w-[40%] mx-auto text-[#00856F] font-semibold text-xl">
-              "Health is not valued till sickness comes." - Thomas Fuller
-            </p>
-            <div className="flex justify-between bg-white p-2 absolute bottom-10 w-[30%] right-[3%] gap-2">
-              <img src="/scan/sparkle.svg" alt="" />
-              <input
-                type="text"
-                name="textbox"
-                className="w-[100%] focus:outline-none"
-              />
-              <img src="/scan/search.svg" alt="" className="w-7" />
-            </div>
-          </>
-        )}
-
-{!showFamilyPhoto && (
-  <>
-    <div className="bg-white p-3 mx-10 mb-5 rounded-lg">
-      <span className="font-semibold">Your Input:</span>
-      <span className="ml-2">{newMessage}</span>
-    </div>
-    <div className="bg-white chat mr-10 w-[30rem] mx-auto h-[400px] p-3 break-words overflow-auto">
-      {messages.map((message, index) => (
-        <div key={index} className={`chat ${message.isUser ? "chat-end" : "chat-start"}`}>
-          <div className="chat-bubble">
-            {message.text}
-            {!message.isUser && <GiSpeaker size={30} onClick={() => handlePlayButtonClick(message.text)} />}
+            <img src="/scan/search.svg" alt="" className="w-7" />
           </div>
-        </div>
-      ))}
-    </div>
-    <div className="flex justify-between bg-white p-2 relative top-24 w-[90%] gap-2">
-      <img src="/scan/sparkle.svg" alt="" />
-      <button
-        onClick={handleSpeechToText}
-        className="w-[10%] focus:outline-none"
-      >
-        <AiOutlineAudio size={30} color="green" />
-      </button>
-      <select
-        className="w-[20%] focus:outline-none border-none rounded-lg p-3"
-        value={selectedLanguage}
-        onChange={(e) => setSelectedLanguage(e.target.value)}
-      >
-        {Object.keys(languages).map((key) => (
-          <option key={key} value={key}>
-            {languages[key]}
-          </option>
-        ))}
-      </select>
-      <input
-        id="textbox"
-        type="text"
-        name="textbox"
-        className="w-[50%] focus:outline-none border-none rounded-lg p-3"
-        placeholder="Type your message here..."
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-      />
-      <button
-        className="w-[10%] focus:outline-none"
-        onClick={handleChatSubmit}
-      >
-        <IoMdSend size={30} color="#5BBA9F" />
-      </button>
-    </div>
-  </>
-)}
+        </>
+      )}
 
-
-      </div>
-      <img src="/icon.svg" alt="icon" className="absolute right-4 top-4 w-12" />
+      {!showFamilyPhoto && (
+        <>
+          <div className="bg-white p-3 mx-10 mb-5 rounded-lg">
+            <span className="font-semibold">
+              {language === "english" ? "Your Input:" : "आपका इनपुट:"}
+            </span>
+            <span className="ml-2">{newMessage}</span>
+          </div>
+          <div className="bg-white chat mr-10 w-[30rem] mx-auto h-[400px] p-3 break-words overflow-auto">
+            {messages.map((message, index) => (
+              <div key={index} className={`chat ${message.isUser ? "chat-end" : "chat-start"}`}>
+                <div className="chat-bubble">
+                  {message.text}
+                  {!message.isUser && <GiSpeaker size={30} onClick={() => handlePlayButtonClick(message.text)} />}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-between bg-white p-2 relative top-24 w-[90%] gap-2">
+            <img src="/scan/sparkle.svg" alt="" />
+            <button
+              onClick={handleSpeechToText}
+              className="w-[10%] focus:outline-none"
+            >
+              <AiOutlineAudio size={30} color="green" />
+            </button>
+            <select
+              className="w-[20%] focus:outline-none border-none rounded-lg p-3"
+              value={selectedLanguage}
+              onChange={(e) => setSelectedLanguage(e.target.value)}
+            >
+              {Object.keys(languages).map((key) => (
+                <option key={key} value={key}>
+                  {languages[key]}
+                </option>
+              ))}
+            </select>
+            <input
+              id="textbox"
+              type="text"
+              name="textbox"
+              className="w-[50%] focus:outline-none border-none rounded-lg p-3"
+              placeholder={
+                language === "english"
+                  ? "Type your message here..."
+                  : "अपना संदेश यहाँ लिखें..."
+              }
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+            />
+            <button
+              className="w-[10%] focus:outline-none"
+              onClick={handleChatSubmit}
+            >
+              <IoMdSend size={30} color="#5BBA9F" />
+            </button>
+          </div>
+        </>
+      )}
     </div>
-  );
-}
+    <img src="/icon.svg" alt="icon" className="absolute right-4 top-4 w-12" />
+    <button onClick={toggleLanguage} className="absolute right-20 top-4 px-3 py-1 rounded bg-gray-200 text-gray-800 mt-2 font-semibold">
+    {language === "english" ? "हिंदी" : "English"}
+  </button>
+  </div>
+)
+            }

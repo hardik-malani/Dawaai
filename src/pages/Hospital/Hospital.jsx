@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import axios from "axios";
 import Tests from "./test";
-import { MdFilterAlt } from "react-icons/md";
-import { MdArrowBack } from "react-icons/md";
+import { MdFilterAlt, MdArrowBack } from "react-icons/md";
 
 
 export default function Hospital() {
@@ -20,7 +19,6 @@ export default function Hospital() {
 
   const [selectedTests, setSelectedTests] = useState([]);
 
-  
   const goBack = () => {
     window.history.back(); // Navigate back to the previous page
   };
@@ -102,6 +100,14 @@ export default function Hospital() {
     }
   };
 
+  // Language toggle state
+  const [isEnglish, setIsEnglish] = useState(false);
+
+  // Function to toggle between English and Hindi
+  const toggleLanguage = () => {
+    setIsEnglish(!isEnglish);
+  };
+
   return (
     <>
       <div className="bg-[#E1F9F5] flex">
@@ -149,7 +155,7 @@ export default function Hospital() {
           </div>
           <div className="bg-[#5BBA9F] rounded-md flex flex-col h-auto w-60 p-4">
             <h1 className="flex justify-center font-semibold h-8">
-              Medical Test
+              {isEnglish ? "Medical Test" : "चिकित्सा परीक्षण"}
             </h1>
             <div className="mt-4">
               <input
@@ -159,7 +165,9 @@ export default function Hospital() {
                 value="Comprehensive Metabolic Panel (CMP)"
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="test1">Comprehensive Metabolic Panel (CMP)</label>
+              <label htmlFor="test1">
+                {isEnglish ? "Comprehensive Metabolic Panel (CMP)" : "समग्र उपाहार गतिकी आयोजित (सीएमपी)"}
+              </label>
               <br />
 
               <input
@@ -169,7 +177,9 @@ export default function Hospital() {
                 value="Complete Blood Count (CBC)"
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="test2">Complete Blood Count (CBC)</label>
+              <label htmlFor="test2">
+                {isEnglish ? "Complete Blood Count (CBC)" : "पूर्ण रक्त गणना (सीबीसी)"}
+              </label>
               <br />
 
               <input
@@ -179,7 +189,9 @@ export default function Hospital() {
                 value="Lipid Profile"
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="test3">Lipid Profile</label>
+              <label htmlFor="test3">
+                {isEnglish ? "Lipid Profile" : "लिपिड प्रोफाइल"}
+              </label>
               <br />
 
               <input
@@ -189,7 +201,9 @@ export default function Hospital() {
                 value="Liver Panel"
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="test4">Liver Panel</label>
+              <label htmlFor="test4">
+                {isEnglish ? "Liver Panel" : "जिगर पैनल"}
+              </label>
               <br />
 
               <input
@@ -199,7 +213,9 @@ export default function Hospital() {
                 value="Thyroid Panel"
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="test5">Thyroid Panel</label>
+              <label htmlFor="test5">
+                {isEnglish ? "Thyroid Panel" : "थायराइड पैनल"}
+              </label>
               <br />
 
               <input
@@ -209,7 +225,9 @@ export default function Hospital() {
                 value="Hemoglobin A1c"
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="test6">Hemoglobin A1c</label>
+              <label htmlFor="test6">
+                {isEnglish ? "Hemoglobin A1c" : "हेमोग्लोबिन ए1सी"}
+              </label>
               <br />
 
               <input
@@ -219,7 +237,9 @@ export default function Hospital() {
                 value="Urinalysis"
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="test7">Urinalysis</label>
+              <label htmlFor="test7">
+                {isEnglish ? "Urinalysis" : "मूत्राघात"}
+              </label>
               <br />
 
               <input
@@ -229,7 +249,9 @@ export default function Hospital() {
                 value="Blood Glucose Test"
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="test8">Blood Glucose Test</label>
+              <label htmlFor="test8">
+                {isEnglish ? "Blood Glucose Test" : "रक्त ग्लूकोज परीक्षण"}
+              </label>
               <br />
 
               <input
@@ -239,7 +261,9 @@ export default function Hospital() {
                 value="C-Reactive Protein (CRP)"
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="test9">C-Reactive Protein (CRP)</label>
+              <label htmlFor="test9">
+                {isEnglish ? "C-Reactive Protein (CRP)" : "सी-प्रतिक्रियात्मक प्रोटीन (सीआरपी)"}
+              </label>
               <br />
 
               <input
@@ -249,7 +273,9 @@ export default function Hospital() {
                 value="Prothrombin Time (PT)"
                 onChange={handleCheckboxChange}
               />
-              <label htmlFor="test10">Prothrombin Time (PT)</label>
+              <label htmlFor="test10">
+                {isEnglish ? "Prothrombin Time (PT)" : "प्रोथ्रोम्बिन समय (पीटी)"}
+              </label>
               <br />
 
               <input
@@ -260,7 +286,7 @@ export default function Hospital() {
                 onChange={handleCheckboxChange}
               />
               <label htmlFor="test11">
-                Activated Partial Thromboplastin Time (APTT)
+                {isEnglish ? "Activated Partial Thromboplastin Time (APTT)" : "सक्रिय आंशिक थ्रॉम्बोप्लास्टिन समय (एपीटीटी)"}
               </label>
               <br />
             </div>
@@ -275,9 +301,8 @@ export default function Hospital() {
                 id="search"
                 value={searchTerm}
                 onChange={handleSearchChange}
-                placeholder="Search something.."
+                placeholder={isEnglish ? "Search something.." : "कुछ खोजें..."}
               />
-              {/* <AiOutlineSearch className="self-center mt-4 ml-3" size={30} /> */}
             </form>
             <div className="container mx-auto mt-10 flex justify-around px-2 md:gap-x-4 gap-y-3 flex-wrap">
               {cardData
@@ -351,13 +376,13 @@ export default function Hospital() {
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 className="rounded-md p-1 fixed bottom-10 my-2 opacity-90"
-                placeholder="Type Your text..."
+                placeholder={isEnglish ? "Type Your text..." : "अपना पाठ टाइप करें..."}
               />
               <button
                 type="submit"
                 className="fixed bottom-10 ml-60 mb-2 bg-green-600 p-1 rounded-lg"
               >
-                Send
+                {isEnglish ? "Send" : "भेजें"}
               </button>
             </form>
           </div>
@@ -368,15 +393,15 @@ export default function Hospital() {
           className="fixed bottom-20 right-10 bg-[#5BBA9F] text-white py-2 px-4 rounded-lg"
           onClick={toggleChatVisibility}
         >
-          {isChatVisible ? "Hide Chat" : "Show Chat"}
+          {isChatVisible ? (isEnglish ? "Hide Chat" : "चैट छुपाएं") : (isEnglish ? "Show Chat" : "चैट दिखाएं")}
         </button>
       </div>
       <button
-          onClick={goBack}
-          className="absolute top-4 left-4"
-        >
-          <MdArrowBack size={40} />
-        </button>
+        onClick={goBack}
+        className="absolute top-4 left-4"
+      >
+        <MdArrowBack size={40} />
+      </button>
     </>
   );
-}
+              }
