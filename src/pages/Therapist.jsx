@@ -24,7 +24,7 @@ export default function Therapist() {
       setProgress((prevProgress) => prevProgress + 50); // Increase progress by 50
       setOcrResult("");
       setImage(reader.result);
-      setCameraImage(reader.result); // Set camera image state
+      // setCameraImage(reader.result); // Set camera image state
       uploadImage(reader.result);
     };
 
@@ -43,7 +43,7 @@ export default function Therapist() {
     // Increase progress by another 50 when switch camera button is clicked
     setProgress((prevProgress) => prevProgress + 50);
     // Implement other camera handling logic here
-    fetch("/video_feed") // Fetch video feed route
+    fetch("http://172.16.41.154:5000/video_feed") // Fetch video feed route
       .then((response) => {
         // Handle response
         console.log("Response received:", response);
@@ -101,6 +101,15 @@ export default function Therapist() {
           </div>
           <div className="flex gap-5 justify-between px-10">
             <div className="bg-white h-48 w-96 rounded-lg">
+            {image && (
+                <img
+                  src={image}
+                  alt="Camera"
+                  className="h-full w-full object-cover"
+                />
+              )}
+            </div>
+            <div className="bg-black h-48 w-48 rounded-lg">
               {cameraImage && (
                 <img
                   src={cameraImage}
@@ -109,7 +118,6 @@ export default function Therapist() {
                 />
               )}
             </div>
-            <div className="bg-black h-48 w-48 rounded-lg"></div>
           </div>
           <button
             className="my-5 p-3 flex gap-2 items-center ml-8 bg-[#5BBA9F] w-fit rounded-lg text-white hover:bg-[#4bc9a5]"
