@@ -58,7 +58,7 @@ const Location = (props) => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-[#E1F9F5]">
+    <div className="flex items-center justify-center h-screen bg-[#E1F9F5] text-white">
       <div className="flex h-fit rounded-3xl p-7 gap-10 justify-center bg-[#00856F] items-center">
         <div className="w-2/5">
           <img src="https://www.shutterstock.com/image-photo/modern-hospital-style-building-260nw-212251981.jpg" alt="Hospital" className="w-full h-auto" />
