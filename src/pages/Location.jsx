@@ -4,7 +4,6 @@ import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer } from "@r
 import Tests from "../pages/Hospital/test";
 import { MdArrowBack } from "react-icons/md";
 
-
 const mapContainerStyle = {
   width: "100%",
   height: "300px",
@@ -26,6 +25,8 @@ const Location = (props) => {
   const { test_name, location, description, price } = test;
   const [pickupLocation, setPickupLocation] = useState("");
   const [response, setResponse] = useState(null);
+  const [distance, setDistance] = useState(null);
+  const [shippingCharges, setShippingCharges] = useState(0);
 
   const goBack = () => {
     window.history.back(); // Navigate back to the previous page
@@ -34,6 +35,23 @@ const Location = (props) => {
   const directionsCallback = (result, status) => {
     if (status === "OK") {
       setResponse(result);
+
+      // Extract and set distance
+      const route = result.routes[0];
+      const legs = route.legs[0];
+      const distanceValue = legs.distance.value;
+      setDistance(legs.distance.text);
+
+      // Calculate shipping charges based on distance
+      if (distanceValue < 1000000) { // Below 1000 km
+        setShippingCharges(100);
+      } else if (distanceValue >= 1000000 && distanceValue < 2000000) { // Between 1000-2000 km
+        setShippingCharges(200);
+      } else if (distanceValue >= 2000000 && distanceValue < 3000000) { // Between 2000-3000 km
+        setShippingCharges(300);
+      } else { // Above 3000 km
+        setShippingCharges(350);
+      }
     } else {
       console.error(`Directions request failed due to ${status}`);
     }
@@ -41,7 +59,7 @@ const Location = (props) => {
 
   return (
     <div className="flex items-center justify-center h-screen bg-[#E1F9F5]">
-      <div className="flex h-4/6 rounded-3xl p-7 gap-10 justify-center bg-[#00856F] items-center">
+      <div className="flex h-fit rounded-3xl p-7 gap-10 justify-center bg-[#00856F] items-center">
         <div className="w-2/5">
           <img src="https://www.shutterstock.com/image-photo/modern-hospital-style-building-260nw-212251981.jpg" alt="Hospital" className="w-full h-auto" />
         </div>
@@ -82,16 +100,21 @@ const Location = (props) => {
                   {response && <DirectionsRenderer directions={response} />}
                 </GoogleMap>
               </LoadScript>
+              <div className="mt-4 text-lg font-semibold">
+                Distance: {distance}
+                <br />
+                Total Cost: ₹ {parseInt(price) + shippingCharges} + ₹ {shippingCharges} (for shipping)
+              </div>
             </div>
           )}
         </div>
       </div>
       <button
-          onClick={goBack}
-          className="absolute top-4 left-4"
-        >
-          <MdArrowBack size={40} />
-        </button>
+        onClick={goBack}
+        className="absolute top-4 left-4"
+      >
+        <MdArrowBack size={40} />
+      </button>
     </div>
   );
 };
