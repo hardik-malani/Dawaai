@@ -43,6 +43,17 @@ export default function Therapist() {
     // Increase progress by another 50 when switch camera button is clicked
     setProgress((prevProgress) => prevProgress + 50);
     // Implement other camera handling logic here
+    fetch("/video_feed") // Fetch video feed route
+      .then((response) => {
+        // Handle response
+        console.log("Response received:", response);
+        // Set camera image state to the response
+        setCameraImage(response.url);
+      })
+      .catch((error) => {
+        // Handle error
+        console.error("Error fetching video feed:", error);
+      });
   };
 
   const handleVideoUpload = (event) => {
@@ -131,7 +142,7 @@ export default function Therapist() {
           >
             Upload Video
           </button>
-          <div className="w-[24rem] h-40 bg-white rounded-2xl"></div>
+          <div id="graph" className="w-[24rem] h-40 bg-white rounded-2xl"></div>
         </div>
       </div>
       <div>

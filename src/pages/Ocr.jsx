@@ -105,6 +105,7 @@ export default function Ocr() {
         setNewMessage("");
         // Store the text-to-speech data
         const utterance = new SpeechSynthesisUtterance(answer);
+        
         if (selectedLanguage !== "en") {
           switch (selectedLanguage) {
             case "guj_Gujr": //
@@ -159,18 +160,51 @@ export default function Ocr() {
   const handleSpeechToText = async () => {
     try {
       const recognition = new window.webkitSpeechRecognition();
-      recognition.lang = "en-US";
-
+      let langCode = "en-US"; // Default language code
+  
+      switch (selectedLanguage) {
+        case "guj_Gujr":
+          langCode = "gu-IN";
+          break;
+        case "hin_Deva":
+          langCode = "hi-IN";
+          break;
+        case "kan_Knda":
+          langCode = "kn-IN";
+          break;
+        case "gom_Deva":
+          langCode = "kok-IN";
+          break;
+        case "mar_Deva":
+          langCode = "mr-IN";
+          break;
+        case "pan_Guru":
+          langCode = "pa-IN";
+          break;
+        case "tam_Taml":
+          langCode = "ta-IN";
+          break;
+        case "tel_Telu":
+          langCode = "te-IN";
+          break;
+        default:
+          langCode = "en-US";
+          break;
+      }
+  
+      recognition.lang = langCode;
+  
       recognition.onresult = (event) => {
         const speechToTextResult = event.results[0][0].transcript;
-        setNewMessage(speechToTextResult); 
+        setNewMessage(speechToTextResult);
       };
-
+  
       recognition.start();
     } catch (error) {
       console.error("Error converting speech to text:", error);
     }
   };
+  
 
   const handlePlayButtonClick = () => {
     // Check if speech synthesis is speaking
