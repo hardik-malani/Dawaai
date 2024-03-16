@@ -101,9 +101,9 @@ export default function Therapist() {
           </div>
           <div className="flex gap-5 justify-between px-10">
             <div className="bg-white h-48 w-96 rounded-lg">
-              {cameraImage && (
+              {image && (
                 <img
-                  src={cameraImage}
+                  src={image}
                   alt="Camera"
                   className="h-full w-full object-cover"
                 />
