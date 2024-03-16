@@ -5,6 +5,7 @@ import Ocr from './pages/Ocr';
 import Hospital from './pages/Hospital/Hospital';
 import Location from './pages/Location';
 import Therapist from './pages/Therapist';
+import Login from './pages/Login';
 
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/lab" element={<Hospital/>} />
           <Route path="/therapist" element={<Therapist/>} />
           <Route path="/test/:id" element={<Location/>} />
+          <Route path="/login" element={<Login/>} />
         </Routes>
       </Router>
     </>

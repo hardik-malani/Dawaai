@@ -112,7 +112,7 @@ export default function Therapist() {
             <div className="bg-black h-48 w-48 rounded-lg">
               {cameraImage && (
                 <img
-                  src={cameraImage}
+                  src={image}
                   alt="Camera"
                   className="h-full w-full object-cover"
                 />

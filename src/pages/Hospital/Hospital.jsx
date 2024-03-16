@@ -402,6 +402,12 @@ export default function Hospital() {
       >
         <MdArrowBack size={40} />
       </button>
+      <button
+        onClick={toggleLanguage}
+        className="absolute right-20 top-4 px-3 py-1 rounded bg-gray-200 text-gray-800 mt-2 font-semibold"
+      >
+        {isEnglish === true ? "हिंदी" : "English"}
+      </button>
     </>
   );
               }
