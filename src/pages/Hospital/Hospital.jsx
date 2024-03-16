@@ -16,7 +16,7 @@ export default function Hospital() {
   // State to control the visibility of filter components
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
-  const [query, setQuery] = useState("Coldness, sore throat, cancer");
+  const [query, setQuery] = useState("");
 
   const [selectedTests, setSelectedTests] = useState([]);
 
@@ -68,7 +68,7 @@ export default function Hospital() {
 
   const fetchData = async (query, setBotResponse) => {
     try {
-      const response = await axios.post("http://10.5.132.134/test", {
+      const response = await axios.post("http://localhost:5000/test", {
         prompt_2: query,
       });
       const responseData = response.data;
@@ -332,13 +332,18 @@ export default function Hospital() {
           </div>
         </div>
         {isChatVisible && (
-          <div className="fixed bottom-10 left-0 min-w-[200px] w-[350px] h-[21rem] bg-gradient-to-b from-[#aad0f5] via-[#c4def9] to-whiteopacity-90 rounded-lg ml-2 px-2 border-2 border-blue-500">
+          <div className="fixed bottom-10 left-0 min-w-[200px] w-[350px] h-[21rem] bg-[#5BBA9F] bg-opacity-60 rounded-lg ml-2 px-2 border-2 border-blue-500">
             <div className="chat-container h-[18rem]">
               {messages.map((message, index) => (
                 <div key={index} className={`chat chat-end`}>
                   <div className="chat-bubble">{message.text}</div>
                 </div>
               ))}
+              {botResponse && (
+                <div className="chat chat-end">
+                  <div className="chat-bubble">{botResponse}</div>
+                </div>
+                )}
             </div>
             <form onSubmit={handleMessageSubmit}>
               <input
