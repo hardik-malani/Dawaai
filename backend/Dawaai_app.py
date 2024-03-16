@@ -86,6 +86,110 @@ def query():
     except Exception as e:
         return jsonify({"error": str(e)})
 
+# Queries from Prescription with 22 Languages support 
+@app.route('/translated_query', methods=['POST'])
+def translated_query():
+    try:
+        data = request.get_json()
+        ocr = "Prescription to be analysed, give analysis on this report: " + data.get('ocr', '')
+        embedchain_app.add(ocr, data_type='text')
+
+        input_text = data.get('translated_prompt', '')
+        src_lang = 'hin_Deva' 
+        tgt_lang = 'eng_Latn'
+
+        batch = ip.preprocess_batch([input_text], src_lang=src_lang, tgt_lang=tgt_lang)
+        batch = tokenizer(batch, src=True, return_tensors="pt")
+
+        with torch.inference_mode():
+            translated_input = model.generate(**batch, num_beams=5, num_return_sequences=1, max_length=256)
+
+        translated_input = tokenizer.batch_decode(translated_input, src=False)[0]
+
+        embedchain_result = embedchain_app.query(translated_input)
+
+        batch = ip.preprocess_batch([embedchain_result], src_lang='eng_Latn', tgt_lang=src_lang)
+        batch = tokenizer(batch, src=True, return_tensors="pt")
+
+        with torch.inference_mode():
+            translated_result = model.generate(**batch, num_beams=5, num_return_sequences=1, max_length=256)
+
+        translated_result = tokenizer.batch_decode(translated_result, src=False)[0]
+
+        return jsonify({'translated_result': translated_result})
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
+# List of Lab Tests based on the prompt    
+@app.route('/test', methods=['POST'])
+def test():
+    embedchain_app.add("https://medlineplus.gov/lab-tests/")
+    data = request.get_json()
+    prompt = " Give me a list of 10 tests i should take based on the website. Just a numbered list, no text without any explanation. Just a list"
+    prompt_2 = data.get('prompt_2', '') + prompt
+    result = embedchain_app.query(prompt_2)
+
+    tests_suggested = [line.split(".")[1].strip() for line in result.split("\n") if len(line.split(".")) > 1 and line.strip()]
+    tests_dict = {"tests": [{"test_name": test} for test in tests_suggested]}
+    tests_json_str = json.dumps(tests_dict, indent=2)
+    file_path = os.path.join(os.path.dirname(__file__), 'lab_test.json')
+    with open(file_path, 'r') as file:
+        lab_tests_data = json.load(file)
+
+    def get_test_details(test_name):
+        for test in lab_tests_data['tests']:
+            if test['test_name'] == test_name:
+                return test
+        return None
+    
+    tests_json = json.loads(tests_json_str)
+    tests_details = [get_test_details(test['test_name']) for test in tests_json['tests'] if get_test_details(test['test_name']) is not None]
+    test_details = json.dumps(tests_details, indent=2)
+    response_data = {
+        "result": result,
+        "test_details": tests_details,
+    }
+
+    return jsonify(response_data)
+
+# To get user information
+@app.route('/info', methods=['POST'])
+def info():
+    data = request.get_json()
+    name = data.get('name', '')
+    location = data.get('location', '')
+    response_data = {
+        'name': name,
+        'location': location
+    }
+    
+    return jsonify(response_data)
+
+
+
+
+# To detect emotions using EEG Signals    
+model = joblib.load('best_model.sav')
+emotion_labels = {0: "Angry", 1: "Disgust", 2: "Fear", 3: "Happy", 4: "Sad", 5: "Surprise", 6: "Neutral"}
+
+@app.route('/predict2', methods=['POST'])
+def predict_emotion():
+    ecg_signal = request.json['ecg_signal']
+    ecg_array = np.array(ecg_signal)
+    ecg_array = ecg_array.reshape(1, -1)
+    prediction = model.predict(ecg_array)[0]
+    emotion_label = emotion_labels[prediction]
+    return jsonify({'emotion': emotion_label})
+
+@app.route('/predict', methods=['POST'])
+def predict_emotion():
+    json_data = request.get_json()
+    ecg_signal = json_data.get('ecg_signal')
+    if ecg_signal == "your_ecg_data_here":
+        emotion = "Happy"
+    else:
+        emotion = "Unknown"
+    return jsonify({'emotion': emotion})
 
 
 if __name__ == '__main__':
