@@ -86,7 +86,7 @@ export default function Ocr() {
     if (newMessage.trim() !== "") {
       try {
         let response;
-        if (selectedLanguage === "en") {
+        if (selectedLanguage === "eng_Latn") {
           response = await axios.post("http://localhost:5000/query", {
             ocr: ocrResult,
             prompt: newMessage,
@@ -140,8 +140,8 @@ export default function Ocr() {
                 utterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'te-IN');
                 break;
             default:
-              utterance.lang = "hi-IN";
-              utterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'hi-IN');
+              utterance.lang = "en-US";
+              utterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'en-US');
               break;
           }
     
@@ -290,6 +290,10 @@ export default function Ocr() {
 
 {!showFamilyPhoto && (
   <>
+    <div className="bg-white p-3 mx-10 mb-5 rounded-lg">
+      <span className="font-semibold">Your Input:</span>
+      <span className="ml-2">{newMessage}</span>
+    </div>
     <div className="bg-white chat mr-10 w-[30rem] mx-auto h-[400px] p-3 break-words overflow-auto">
       {messages.map((message, index) => (
         <div key={index} className={`chat ${message.isUser ? "chat-end" : "chat-start"}`}>
