@@ -7,7 +7,7 @@ export default function Home() {
     <div className="bg-[#E1F9F5] h-screen w-screen flex flex-col overflow-hidden">
       <Navbar />
       <div className="text-[#00856F] mx-10 flex gap-6 relative top-32 left-[75%] font-semibold">
-        <span className="hover:text-[#559c90]">Consult a doctor</span>
+      <Link to="/therapist"><span className="hover:text-[#559c90]">Consult a Therapist</span></Link>
         <Link to="/lab">
         <span className="hover:text-[#559c90]">Get Medical Tests</span>
         </Link>
