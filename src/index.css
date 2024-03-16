@@ -14,3 +14,16 @@ input[type='range'] {
     background-color: #E1F9F5; /* Change to your desired color */
   }
   
+
+  .loader {
+    border-top-color: #3498db;
+    border-left-color: #3498db;
+    animation: spin 1s infinite linear;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
