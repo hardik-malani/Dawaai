@@ -8,6 +8,7 @@ import { MdFilterAlt, MdArrowBack } from "react-icons/md";
 export default function Hospital() {
   // State to store the value of the range slider
   const [sliderValue, setSliderValue] = useState(600);
+  const [botResponse, setBotResponse] = useState("");
   // State to store the selected location
   const [selectedLocation, setSelectedLocation] = useState("");
   // State to store the search input value
@@ -77,7 +78,6 @@ export default function Hospital() {
     }
   };
 
-  const [botResponse, setBotResponse] = useState("");
 
   useEffect(() => {
     fetchData(query, setBotResponse);
@@ -90,15 +90,47 @@ export default function Hospital() {
   const [messages, setMessages] = useState([]);
 
   const [newMessage, setNewMessage] = useState("");
-
-  const handleMessageSubmit = (event) => {
+  const handleMessageSubmit = async (event) => {
     event.preventDefault();
     if (newMessage.trim() !== "") {
       const newPosition = messages.length % 2 === 0 ? "end" : "start";
       setMessages([...messages, { text: newMessage, position: newPosition }]);
       setNewMessage("");
+  
+      try {
+        const response = await axios.post("http://localhost:5000/test", {
+          prompt_2: newMessage,
+        });
+        const responseData = response.data;
+        const botResponseData = responseData.result;
+        setBotResponse(botResponseData);
+  
+        if (responseData.test_details && responseData.test_details.length > 0) {
+          const newFilteredCardData = Tests.filter((test) => {
+            return responseData.test_details.some(
+              (detail) => detail.test_name === test.test_name
+            );
+          });
+          setFilteredCardData(newFilteredCardData);
+          setTestDetails(responseData.test_details[0]); 
+        } else {
+          setFilteredCardData([]);
+          setTestDetails(null);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     }
-  };
+  };  
+  
+
+  // useEffect(() => {
+  //   console.log(botResponse);
+  // }, [botResponse]);
+
+
+
+  
 
   // Language toggle state
   const [isEnglish, setIsEnglish] = useState(false);
@@ -379,7 +411,7 @@ export default function Hospital() {
                 placeholder={isEnglish ? "Type Your text..." : "अपना पाठ टाइप करें..."}
               />
               <button
-                type="submit"
+                onClick={handleMessageSubmit}
                 className="fixed bottom-10 ml-60 mb-2 bg-green-600 p-1 rounded-lg"
               >
                 {isEnglish ? "Send" : "भेजें"}
@@ -410,4 +442,4 @@ export default function Hospital() {
       </button>
     </>
   );
-              }
+}

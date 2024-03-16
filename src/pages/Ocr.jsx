@@ -457,7 +457,7 @@ export default function Ocr() {
         {language === "english" ? "हिंदी" : "English"}
       </button>
       <div>
-      {ocrResult === "" && (
+      {ocrResult !== "" && (
         <div className="absolute top-[3%] right-[20%]">
           <button
             className="flex items-center justify-center bg-[#5BBA9F] text-white px-4 py-2 rounded-lg hover:bg-[#4bc9a5]"
