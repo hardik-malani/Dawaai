@@ -161,6 +161,26 @@ def test():
 
     return jsonify(response_data)
 
+# Medicines from prescription
+@app.route('/medicine', methods=['POST'])
+def medicine():
+    try:
+        data = request.get_json()
+        prompt = " Give me a numbered list of the medicines prescribed in the prescription. Just a numbered list, no text without any explanation. Just a list: "
+        ocr = prompt + data.get('ocr', '')
+        embedchain_app.add(ocr, data_type='text')
+        result = embedchain_app.query(prompt)
+        answer_index = result.find("Answer")
+        if answer_index != -1:
+            embedchain_result = result[answer_index + len("Answer: "):]
+        else:
+            embedchain_result = result
+        medicines_listed = [line.split(".")[1].strip() for line in embedchain_result.split("\n") if len(line.split(".")) > 1 and line.strip()]
+        return jsonify({"answer": medicines_listed})
+    except Exception as e:
+        return jsonify({"error": str(e)})
+ 
+
 # To get user information
 @app.route('/info', methods=['POST'])
 def info():

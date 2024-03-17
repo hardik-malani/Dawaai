@@ -43,12 +43,12 @@ export default function Home() {
           alt="generate"
         />
         <Link to="/scan">
-          <button className="w-[10%] absolute bottom-14 left-[15%] p-3 text-[#00856F] font-semibold bg-[#B1D7D0] hover:bg-[#99d7cb] rounded-[10px] text-xs">
+          <button className="w-[15%] absolute bottom-14 left-[15%] p-3 text-[#00856F] font-semibold bg-[#B1D7D0] hover:bg-[#99d7cb] rounded-[10px] text-xs">
             {language === "english" ? "Know More about prescription" : "नुस्खे के बारे में और जानें"}
           </button>
         </Link>
         <Link to="/lab">
-          <button className="w-[10%] absolute bottom-14 left-[30%] p-3 text-[#00856F] font-semibold bg-[#B1D7D0] hover:bg-[#99d7cb] rounded-[10px] text-xs">
+          <button className="w-[10%] absolute bottom-14 left-[35%] p-3 text-[#00856F] font-semibold bg-[#B1D7D0] hover:bg-[#99d7cb] rounded-[10px] text-xs">
             {language === "english" ? "Find Lab Test nearby" : "आस-पास लैब टेस्ट खोजें"}
           </button>
         </Link>

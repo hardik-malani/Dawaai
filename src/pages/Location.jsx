@@ -75,7 +75,7 @@ const Location = (props) => {
             <input
               id="pickupLocation"
               type="text"
-              className="border rounded p-2 w-full"
+              className="border rounded p-2 w-full text-black"
               value={pickupLocation}
               onChange={(e) => setPickupLocation(e.target.value)}
             />
