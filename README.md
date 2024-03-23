@@ -21,9 +21,9 @@ Our project seeks to revolutionize healthcare accessibility by ensuring that eve
 - **UI Design:** Figma
 
 ## Team Members
-- **Team Lead:** Hardik Malani
-- **Member 1:** Anouska Jhunjhunwala
-- **Member 2:** Vikrant Singh
+- **Member 1:** Hardik Malani
+- **Member 2:** Anouska Jhunjhunwala
+- **Member 3:** Vikrant Singh
 
 
 ## How to Contribute
